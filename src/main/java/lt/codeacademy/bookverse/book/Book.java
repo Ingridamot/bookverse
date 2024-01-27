@@ -1,4 +1,4 @@
-package lt.codeacademy.bookverse;
+package lt.codeacademy.bookverse.book;
 
 import lombok.*;
 
@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 public class Book {
     private String title;
+    private String author;
     private double price;
     private int amount;
 }
