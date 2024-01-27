@@ -22,7 +22,7 @@ public class BookController {
 
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String sayHelloToCustomer(Model model) {
-        model.addAttribute("book", new Book());
+        model.addAttribute("book", Book.builder().build());
         return "book/book";
     }
 
