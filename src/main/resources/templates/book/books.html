@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book list</title>
+</head>
+<body>
+</body>
+<div th:if="${bookList.isEmpty}">Book list is empty</div>
+<div th:unless="${bookList.isEmpty}">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th></th>  <!-- empty row for buttons (edit, delete, etc)-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book: ${bookList}">
+                <td th:text="${book.title}">a</td>
+                <td th:text="${book.author}">a</td>
+                <td th:text="${book.price}">a</td>
+                <td th:text="${book.amount}">a</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</html>
