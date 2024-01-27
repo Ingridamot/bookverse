@@ -6,7 +6,7 @@
 </head>
 <body>
     <h3>Lets create a book:</h3>
-    <form method="post" th:action="@{/books/create}" th:object="${book}">
+    <form method="post" th:object="${book}">
 
         <label>Title:</label>
         <input type="text" placeholder="book title" th:field="*{title}"><br/>
