@@ -36,12 +36,11 @@ public class BookController {
     }
 
     @PostMapping(HttpEndpoints.BOOKS_CREATE)
-    public String createABook(Book book) {
-
+    public String createABook(Model model, Book book) {
         bookService.saveBook(book);
-        System.out.println("currently in the database");
-        bookService.getAllBooks().forEach(System.out::println);
-        return "book/books"; //tai nera URL Path
+        model.addAttribute("message", "Book added successfully!");
+
+        return "book/book";
     }
 
     @PostMapping(HttpEndpoints.BOOKS_UPDATE)

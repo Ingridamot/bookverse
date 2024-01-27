@@ -2,13 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Book list</title>
 </head>
 <body>
 </body>
 <div th:if="${bookList.isEmpty}">Book list is empty</div>
 <div th:unless="${bookList.isEmpty}">
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Title</th>
