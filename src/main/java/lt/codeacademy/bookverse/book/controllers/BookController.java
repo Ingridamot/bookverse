@@ -11,6 +11,8 @@ import lt.codeacademy.bookverse.book.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,11 @@ public class BookController {
     }
 
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
-    public String getFormForCreate(Model model) {
+    public String getFormForCreate(Model model, String message) {
         log.atInfo().log("-==== get book on create ====-");
         model.addAttribute("book", Book.builder().build());
+        model.addAttribute("message", message);
+
         return "book/book";
     }
 
@@ -43,9 +47,8 @@ public class BookController {
     @PostMapping(HttpEndpoints.BOOKS_CREATE)
     public String createABook(Model model, Book book) {
         bookService.saveBook(book);
-        model.addAttribute("message", "Book added successfully!");
 
-        return "book/book";
+        return "redirect:/books/create?message=Book added successfully!";
     }
 
     @PostMapping(HttpEndpoints.BOOKS_UPDATE)
@@ -56,7 +59,8 @@ public class BookController {
     }
 
     @GetMapping(HttpEndpoints.BOOKS)
-    public String getBooks(Model model, Pageable pageable) {
+    public String getBooks(Model model,
+                           @PageableDefault(size = 5, sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable) {
         final Page<BookDto> allBooks = bookService.getAllBooksPage(pageable);
         model.addAttribute("bookList", allBooks);
         return "book/books";

@@ -7,7 +7,8 @@
 </head>
 <body>
     <h3>Lets create a book:</h3>
-    <div class="alert alert-success" role="alert"
+    <div th:if="${message ne null}"
+         class="alert alert-success" role="alert"
          th:text="${message}">
         Success message when add product
     </div>
