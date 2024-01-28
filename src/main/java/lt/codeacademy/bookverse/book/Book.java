@@ -1,5 +1,9 @@
 package lt.codeacademy.bookverse.book;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +19,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Entity
 public class Book {
+
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private UUID bookId;
     private String title;
     private String author;
