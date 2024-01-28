@@ -7,8 +7,8 @@
 </head>
 <body>
 </body>
-<div th:if="${bookList.isEmpty}">Book list is empty</div>
-<div th:unless="${bookList.isEmpty}">
+<div th:if="${#lists.isEmpty(bookList)}">Book list is empty</div>
+<div th:if="${not #lists.isEmpty(bookList)}">
     <table class="table table-striped">
         <thead>
             <tr>

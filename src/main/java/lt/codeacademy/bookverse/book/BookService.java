@@ -1,6 +1,7 @@
 package lt.codeacademy.bookverse.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class BookService {
     private BookDao bookDao;
 
     @Autowired
-    public BookService(BookDao bookDao) {
+    public BookService(@Qualifier("bookJDBCDao") BookDao productDao) {
         this.bookDao = bookDao;
     }
 

@@ -25,7 +25,7 @@ public class BookDataMockConfig {
         while (MAX_COUNT >= count) {
             bookService.saveBook(
                     Book.builder()
-                            .title(faker.book().title())
+                            .title("(faker)" + faker.book().title())
                             .author(faker.book().author())
                             .amount(faker.number().numberBetween(2, 99))
                             .price(faker.number().numberBetween(1, 100))

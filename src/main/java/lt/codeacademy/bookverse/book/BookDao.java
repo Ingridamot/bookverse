@@ -4,30 +4,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
-public class BookDao { //Dao atlieka duombazes logikos funkcijas, duomenu saugojimas, trynimas, atnaujinimas ir panasios operacijos
-    private Map<UUID, Book> books = new HashMap<>();
 
-    public void save(Book book) {
-        final UUID uuid = UUID.randomUUID();
-        book.setBookId(uuid);
-        books.put(uuid, book);
-    }
+public interface BookDao { //Dao atlieka duombazes logikos funkcijas, duomenu saugojimas, trynimas, atnaujinimas ir panasios operacijos
+    void save(Book book);
 
-    public void update(Book book) {
-        books.put(book.getBookId(), book);
-    }
+    void update(Book book);
 
-    public List<Book> getAll() {
-        return new ArrayList<>(books.values());
-    }
+    List<Book> getAll();
 
-    public Book getBookByUUID(UUID id) {
-        return books.get(id);
-    }
+    Book getBookByUUID(UUID id);
 
-    public void deleteBookByUUID(UUID id) {
-        books.remove(id);
-    }
+    void deleteBookByUUID(UUID id);
 }
-
