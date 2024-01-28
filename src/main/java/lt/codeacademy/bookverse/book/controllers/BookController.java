@@ -3,8 +3,10 @@ package lt.codeacademy.bookverse.book.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lt.codeacademy.bookverse.HttpEndpoints;
+import lt.codeacademy.bookverse.helper.MessageService;
 import lt.codeacademy.bookverse.book.Book;
 import lt.codeacademy.bookverse.book.dto.BookDto;
 import lt.codeacademy.bookverse.book.service.BookService;
@@ -20,19 +22,17 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Log4j2
+@RequiredArgsConstructor
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
+    private final MessageService messageService;
 
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
         log.atInfo().log("-==== get book on create ====-");
         model.addAttribute("book", Book.builder().build());
-        model.addAttribute("message", message);
+        model.addAttribute("message", messageService.getTranslatedMessage(message));
 
         return "book/book";
     }
@@ -48,7 +48,7 @@ public class BookController {
     public String createABook(Model model, Book book) {
         bookService.saveBook(book);
 
-        return "redirect:/books/create?message=Book added successfully!";
+        return "redirect:/books/create?message=book.create.message.success";
     }
 
     @PostMapping(HttpEndpoints.BOOKS_UPDATE)
