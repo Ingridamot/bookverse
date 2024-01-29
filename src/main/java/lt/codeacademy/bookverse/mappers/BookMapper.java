@@ -1,6 +1,8 @@
 package lt.codeacademy.bookverse.mappers;
 
-import lt.codeacademy.bookverse.book.Book;
+import java.util.HashSet;
+
+import lt.codeacademy.bookverse.book.pojo.Book;
 import lt.codeacademy.bookverse.book.dto.BookDto;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +17,17 @@ public class BookMapper {
                 book.getPrice(),
                 book.getAmount()
         );
+    }
+
+
+    public Book fromBookDto(BookDto bookDto) {
+        return Book.builder()
+                .bookId(bookDto.getBookId())
+                .price(bookDto.getPrice())
+                .title(bookDto.getTitle())
+                .author(bookDto.getAuthor())
+                .amount(bookDto.getAmount())
+                .bookCategories(new HashSet<>())
+                .build();
     }
 }

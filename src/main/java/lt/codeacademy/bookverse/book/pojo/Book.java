@@ -1,9 +1,11 @@
-package lt.codeacademy.bookverse.book;
+package lt.codeacademy.bookverse.book.pojo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,23 +13,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 public class Book {
 
-    @Id()
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private UUID bookId;
     private String title;
     private String author;
-    private double price;
+    private BigDecimal price;
     private int amount;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private Set<BookCategory> bookCategories = new HashSet<>();
 }

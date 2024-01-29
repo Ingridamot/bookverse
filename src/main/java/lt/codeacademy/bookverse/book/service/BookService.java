@@ -1,34 +1,44 @@
 package lt.codeacademy.bookverse.book.service;
 
+import lombok.RequiredArgsConstructor;
+import lt.codeacademy.bookverse.book.pojo.Book;
+import lt.codeacademy.bookverse.book.pojo.BookCategory;
 import lt.codeacademy.bookverse.mappers.BookMapper;
-import lt.codeacademy.bookverse.book.Book;
+import lt.codeacademy.bookverse.book.dao.BookCategoryRepository;
 import lt.codeacademy.bookverse.book.dao.BookDao;
 import lt.codeacademy.bookverse.book.dto.BookDto;
+import lt.codeacademy.bookverse.book.exception.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
-    private BookDao bookDao;
-    private BookMapper mapper;
 
-    @Autowired
-    public BookService(BookDao bookDao, BookMapper mapper) {
-        this.bookDao = bookDao;
-        this.mapper = mapper;
+    private final BookDao bookDao;
+    private final BookCategoryRepository bookCategoryRepository;
+    private final BookMapper mapper;
+
+  @Transactional
+    public void saveBook(BookDto bookDto) {
+      final Book book = mapper.fromBookDto(bookDto);
+      final BookCategory productCategory = BookCategory.builder()
+              .name("NaN")
+              .build();
+
+      book.getBookCategories().add(productCategory);
+
+      bookDao.save(book);
     }
 
-    public void saveBook(Book book) {
-        bookDao.save(book);
-    }
-
-    public void updateBook(Book book) {
-        bookDao.update(book);
+    public void updateBook(BookDto bookDto) {
+        bookDao.update(mapper.fromBookDto(bookDto));
     }
 
     public Page<BookDto> getAllBooksPage(Pageable pageable) {
@@ -36,9 +46,11 @@ public class BookService {
     }
 
     public BookDto getBookByUUID(UUID id) {
-        return mapper.toBookDto(bookDao.getBookByUUID(id));
+        return bookDao.getBookByUUID(id)
+                .map(mapper::toBookDto)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
-
+    @Transactional
     public void deleteBookByUUID(UUID id) {
         bookDao.deleteBookByUUID(id);
     }
