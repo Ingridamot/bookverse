@@ -4,6 +4,7 @@ import lt.codeacademy.bookverse.mappers.BookMapper;
 import lt.codeacademy.bookverse.book.Book;
 import lt.codeacademy.bookverse.book.dao.BookDao;
 import lt.codeacademy.bookverse.book.dto.BookDto;
+import lt.codeacademy.bookverse.book.exception.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,8 @@ public class BookService {
         this.mapper = mapper;
     }
 
-    public void saveBook(Book book) {
+    public void saveBook(BookDto bookDto) {
+        var book = mapper.fromBookDto(bookDto);
         bookDao.save(book);
     }
 
@@ -36,7 +38,9 @@ public class BookService {
     }
 
     public BookDto getBookByUUID(UUID id) {
-        return mapper.toBookDto(bookDao.getBookByUUID(id));
+        return bookDao.getBookByUUID(id)
+                .map(mapper::toBookDto)
+                .orElseThrow(BookNotFoundException::new);
     }
 
     public void deleteBookByUUID(UUID id) {

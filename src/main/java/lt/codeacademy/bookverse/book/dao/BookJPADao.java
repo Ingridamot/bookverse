@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Repository
 @Primary
@@ -41,7 +42,7 @@ public class BookJPADao implements BookDao{
     }
 
     @Override
-    public Book getBookByUUID(UUID id) {
+    public Optional<Book> getBookByUUID(UUID id) {
         return repository.findByBookId(id);
     }
 

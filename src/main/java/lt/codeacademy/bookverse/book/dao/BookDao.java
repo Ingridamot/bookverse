@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -17,7 +18,7 @@ public interface BookDao { //Dao atlieka duombazes logikos funkcijas, duomenu sa
 
     Page<Book> getPage(Pageable pageable);
 
-    Book getBookByUUID(UUID id);
+    Optional<Book> getBookByUUID(UUID id);
 
     void deleteBookByUUID(UUID id);
 }

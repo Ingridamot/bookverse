@@ -16,4 +16,15 @@ public class BookMapper {
                 book.getAmount()
         );
     }
+
+
+    public Book fromBookDto(BookDto bookDto) {
+        return Book.builder()
+                .bookId(bookDto.getBookId())
+                .price(bookDto.getPrice())
+                .title(bookDto.getTitle())
+                .author(bookDto.getAuthor())
+                .amount(bookDto.getAmount())
+                .build();
+    }
 }

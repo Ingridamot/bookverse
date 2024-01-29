@@ -3,12 +3,14 @@ package lt.codeacademy.bookverse.book.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lt.codeacademy.bookverse.HttpEndpoints;
 import lt.codeacademy.bookverse.helper.MessageService;
 import lt.codeacademy.bookverse.book.Book;
 import lt.codeacademy.bookverse.book.dto.BookDto;
+import lt.codeacademy.bookverse.book.exception.BookNotFoundException;
 import lt.codeacademy.bookverse.book.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RequiredArgsConstructor
 public class BookController {
+
     private final BookService bookService;
     private final MessageService messageService;
 
@@ -31,7 +35,7 @@ public class BookController {
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
         log.atInfo().log("-==== get book on create ====-");
-        model.addAttribute("book", Book.builder().build());
+        model.addAttribute("bookDto", BookDto.builder().build());
         model.addAttribute("message", messageService.getTranslatedMessage(message));
 
         return "book/book";
@@ -40,13 +44,16 @@ public class BookController {
     @GetMapping(HttpEndpoints.BOOKS_UPDATE)
     public String getFormForUpdate(Model model, @PathVariable UUID bookId) {
         log.atInfo().log("-==== get book on update ====-");
-        model.addAttribute("book", bookService.getBookByUUID(bookId));
+        model.addAttribute("bookDto", bookService.getBookByUUID(bookId));
         return "book/book";
     }
 
     @PostMapping(HttpEndpoints.BOOKS_CREATE)
-    public String createABook(Model model, Book book) {
-        bookService.saveBook(book);
+    public String createABook(Model model, @Valid BookDto book, BindingResult errors) {
+        if (errors.hasErrors()) {
+            return "book/book";
+        }
+            bookService.saveBook(book);
 
         return "redirect:/books/create?message=book.create.message.success";
     }
@@ -71,6 +78,10 @@ public class BookController {
         bookService.deleteBookByUUID(bookId);
 
         return getBooks(model, pageable);
+    }
+    @ExceptionHandler
+    public String bookNotFound(BookNotFoundException e, Model model) {
+        return "product/error/productNotFound";
     }
 }
 

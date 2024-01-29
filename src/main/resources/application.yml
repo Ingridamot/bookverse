@@ -29,3 +29,7 @@ logging:
         bookverse:
           config: DEBUG
           book: INFO
+server:
+  error:
+    whitelabel:
+      enabled: false
