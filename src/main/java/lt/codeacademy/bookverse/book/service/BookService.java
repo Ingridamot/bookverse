@@ -1,14 +1,13 @@
 package lt.codeacademy.bookverse.book.service;
 
 import lombok.RequiredArgsConstructor;
+import lt.codeacademy.bookverse.book.mappers.BookMapper;
 import lt.codeacademy.bookverse.book.pojo.Book;
 import lt.codeacademy.bookverse.book.pojo.BookCategory;
-import lt.codeacademy.bookverse.mappers.BookMapper;
 import lt.codeacademy.bookverse.book.dao.BookCategoryRepository;
 import lt.codeacademy.bookverse.book.dao.BookDao;
 import lt.codeacademy.bookverse.book.dto.BookDto;
 import lt.codeacademy.bookverse.book.exception.BookNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,27 +26,25 @@ public class BookService {
 
   @Transactional
     public void saveBook(BookDto bookDto) {
-      final Book book = mapper.fromBookDto(bookDto);
-      final BookCategory productCategory = BookCategory.builder()
-              .name("NaN")
-              .build();
+      final Book book = mapper.fromDto(bookDto);
+      final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryId());
 
-      book.getBookCategories().add(productCategory);
+      book.getBookCategories().add(bookCategory);
 
       bookDao.save(book);
     }
 
     public void updateBook(BookDto bookDto) {
-        bookDao.update(mapper.fromBookDto(bookDto));
+        bookDao.update(mapper.fromDto(bookDto));
     }
 
     public Page<BookDto> getAllBooksPage(Pageable pageable) {
-        return bookDao.getPage(pageable).map(book -> mapper.toBookDto(book));
+        return bookDao.getPage(pageable).map(book -> mapper.toDto(book));
     }
 
     public BookDto getBookByUUID(UUID id) {
         return bookDao.getBookByUUID(id)
-                .map(mapper::toBookDto)
+                .map(mapper::toDto)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
     @Transactional

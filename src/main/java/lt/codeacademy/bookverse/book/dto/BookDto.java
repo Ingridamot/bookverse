@@ -24,4 +24,6 @@ public class BookDto {
     @Positive(message = "{bookdto.positive}")
     @NotNull
     private int amount;
+    @NotNull
+    private Long categoryId;
 }

@@ -1,11 +1,14 @@
 package lt.codeacademy.bookverse.book.controllers;
 
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lt.codeacademy.bookverse.HttpEndpoints;
+import lt.codeacademy.bookverse.book.dto.BookCategoryDto;
+import lt.codeacademy.bookverse.book.service.BookCategoryService;
 import lt.codeacademy.bookverse.helper.MessageService;
 import lt.codeacademy.bookverse.book.pojo.Book;
 import lt.codeacademy.bookverse.book.dto.BookDto;
@@ -29,12 +32,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BookController {
 
     private final BookService bookService;
+    private final BookCategoryService bookCategoryService;
     private final MessageService messageService;
 
 
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
-        log.atInfo().log("-==== get book on create ====-");
+        Set<BookCategoryDto> categories = bookCategoryService.getCategories();
+
+        model.addAttribute("categoriesDto", categories);
         model.addAttribute("bookDto", BookDto.builder().build());
         model.addAttribute("message", messageService.getTranslatedMessage(message));
 

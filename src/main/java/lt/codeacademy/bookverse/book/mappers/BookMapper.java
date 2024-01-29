@@ -1,26 +1,27 @@
-package lt.codeacademy.bookverse.mappers;
+package lt.codeacademy.bookverse.book.mappers;
 
 import java.util.HashSet;
 
+import lt.codeacademy.bookverse.common.mapper.Mapper;
 import lt.codeacademy.bookverse.book.pojo.Book;
 import lt.codeacademy.bookverse.book.dto.BookDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookMapper {
+public class BookMapper implements Mapper<Book, BookDto> {
 
-    public BookDto toBookDto(Book book) {
-        return new BookDto(
-                book.getBookId(),
-                book.getTitle(),
-                book.getAuthor(),
-                book.getPrice(),
-                book.getAmount()
-        );
+    public BookDto toDto(Book book) {
+        return BookDto.builder()
+                .bookId(book.getBookId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .price(book.getPrice())
+                .amount(book.getAmount())
+                .build();
     }
 
 
-    public Book fromBookDto(BookDto bookDto) {
+    public Book fromDto(BookDto bookDto) {
         return Book.builder()
                 .bookId(bookDto.getBookId())
                 .price(bookDto.getPrice())
