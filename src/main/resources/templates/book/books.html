@@ -1,126 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../../js/language.js"></script>
-    <title th:text="#{books.name}">Book list</title>
-</head>
+<head th:replace="~{fragments/layout :: head(#{books.name})}"></head>
 <body>
-</body>
-<label for="languageSelector"></label>
-<select id="languageSelector">
-    <option th:text="#{language.choose}">Choose language</option>
-    <option value="LT" th:text="'Lietuvių'"></option>
-    <option value="DE" th:text="'Deutsch'"></option>
-    <option value="EN" th:text="'English'" ></option>
-</select>
+    <nav th:replace="~{fragments/layout :: nav('books')}">placeholder</nav>
+    <main>
+        <div th:if="${#lists.isEmpty(bookList)}" th:text="#{books.empty}">Book list is empty</div>
+        <div th:if="${not #lists.isEmpty(bookList)}" class="container">
 
-<div th:if="${#lists.isEmpty(bookList)}" th:text="#{books.empty}">Book list is empty</div>
-<div th:if="${not #lists.isEmpty(bookList)}" class="container">
+            <span th:text="#{books.total(${bookList.totalElements})}">Total elements</span>
+            <br/><span th:text="#{books.total.pages(${bookList.totalPages})}">Total pages</span>
 
-    <span th:text="#{books.total(${bookList.totalElements})}">Total elements</span>
-    <br/><span th:text="#{books.total.pages(${bookList.totalPages})}">Total pages</span>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="col-md-5">
-                    <a th:with="directionVariable=${bookList.sort.getOrderFor('title')?.direction}"
-                       th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='title,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-                        <i th:class="'fa ' + ${directionVariable?.name eq 'ASC'? 'fa-arrow-up' : 'fa-arrow-down'}"
-                           aria-hidden="true"
-                           th:if="${bookList.sort.getOrderFor('title') ne null}"></i>
-                        <span th:text="#{books.field.title}">Title</span>
-                    </a>
-                </th>
-                <th class="col-md-5">
-                    <a th:with="directionVariable=${bookList.sort.getOrderFor('author')?.direction}"
-                       th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='author,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-                        <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
-                           aria-hidden="true"
-                           th:if="${bookList.sort.getOrderFor('author') ne null}"></i>
-                        <span th:text="#{books.field.author}">Author</span>
-                    </a>
-                </th>
-                <th class="col-md-2">
-                    <a th:with="directionVariable=${bookList.sort.getOrderFor('price')?.direction}"
-                       th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='price,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
-                        <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
-                           aria-hidden="true"
-                           th:if="${bookList.sort.getOrderFor('price') ne null}"></i>
-                        <span th:text="#{books.field.price}">Price</span>
-                    </a>
-                </th>
-                <th class="col-md-2">
-                    <a th:with="directionVariable=${bookList.sort.getOrderFor('amount')?.direction}"
-                       th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='amount,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
-                        <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
-                           aria-hidden="true"
-                           th:if="${bookList.sort.getOrderFor('amount') ne null}"></i>
-                        <span th:text="#{books.field.amount}">Amount</span>
-                    </a>
-                </th>
-                <th></th>  <!-- empty row for buttons (edit, delete, etc)-->
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book: ${bookList}">
-                <td><a th:href="@{/books/{bookId}/update(bookId=${book.bookId})}" th:text="${book.title}"></a></td>
-                <td th:text="${book.author}">a</td>
-                <td th:text="${book.price}">a</td>
-                <td th:text="${book.amount}">a</td>
-                <td><a
-                        th:href="@{/books/{bookId}/delete(bookId=${book.bookId})}"
-                        th:text="#{books.delete}"
-                        class="btn btn-warning"
-                >
-                    Delete
-                </a></td>
-            </tr>
-        </tbody>
-    </table>
-    <nav class="d-flex justify-content-end" aria-label="Page navigation">
-        <ul class="pagination"
-            th:with="
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-md-5">
+                        <a th:with="directionVariable=${bookList.sort.getOrderFor('title')?.direction}"
+                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='title,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
+                            <i th:class="'fa ' + ${directionVariable?.name eq 'ASC'? 'fa-arrow-up' : 'fa-arrow-down'}"
+                               aria-hidden="true"
+                               th:if="${bookList.sort.getOrderFor('title') ne null}"></i>
+                            <span th:text="#{books.field.title}">Title</span>
+                        </a>
+                    </th>
+                    <th class="col-md-2">
+                        <a th:with="directionVariable=${bookList.sort.getOrderFor('author')?.direction}"
+                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='author,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
+                            <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
+                               aria-hidden="true"
+                               th:if="${bookList.sort.getOrderFor('author') ne null}"></i>
+                            <span th:text="#{books.field.author}">Author</span>
+                        </a>
+                    </th>
+                    <th class="col-md-2">
+                        <a th:with="directionVariable=${bookList.sort.getOrderFor('price')?.direction}"
+                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='price,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
+                            <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
+                               aria-hidden="true"
+                               th:if="${bookList.sort.getOrderFor('price') ne null}"></i>
+                            <span th:text="#{books.field.price}">Price</span>
+                        </a>
+                    </th>
+                    <th class="col-md-2">
+                        <a th:with="directionVariable=${bookList.sort.getOrderFor('amount')?.direction}"
+                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='amount,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
+                            <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
+                               aria-hidden="true"
+                               th:if="${bookList.sort.getOrderFor('amount') ne null}"></i>
+                            <span th:text="#{books.field.amount}">Amount</span>
+                        </a>
+                    </th>
+                    <th></th>  <!-- empty row for buttons (edit, delete, etc)-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book: ${bookList}">
+                    <td><a th:href="@{/books/{bookId}/update(bookId=${book.bookId})}" th:text="${book.title}"></a></td>
+                    <td th:text="${book.author}">a</td>
+                    <td th:text="${book.price}">a</td>
+                    <td th:text="${book.amount}">a</td>
+                    <td><a
+                            th:href="@{/books/{bookId}/delete(bookId=${book.bookId})}"
+                            th:text="#{books.delete}"
+                            class="btn btn-warning"
+                    >
+                        Delete
+                    </a></td>
+                </tr>
+                </tbody>
+            </table>
+            <nav class="d-flex justify-content-end" aria-label="Page navigation">
+                <ul class="pagination"
+                    th:with="
                 orderVariable=${bookList.sort.iterator().hasNext() ? bookList.sort.iterator().next() : null},
                 sortVariable=${orderVariable?.property + ',' +  orderVariable?.direction + ',ignorecase'}
             "
-        >
-            <li
-                    class="page-item"
-                    th:classappend="${!bookList.hasPrevious() ? 'disabled' : ''}"
-            >
-                <a class="page-link"
-                   th:href="@{/books(page=${bookList.number} - 1,sort=${sortVariable})}"
-                   th:text="#{books.previous}"
                 >
-                    Previous
-                </a>
-            </li>
+                    <li
+                            class="page-item"
+                            th:classappend="${!bookList.hasPrevious() ? 'disabled' : ''}"
+                    >
+                        <a class="page-link"
+                           th:href="@{/books(page=${bookList.number} - 1,sort=${sortVariable})}"
+                           th:text="#{books.previous}"
+                        >
+                            Previous
+                        </a>
+                    </li>
 
-            <li
-                    class="page-item"
-                    th:each="pageNumber: ${#numbers.sequence(0, bookList.totalPages - 1)}"
-                    th:classappend="${pageNumber == bookList.number ? 'active' : ''}"
-            >
-                <a class="page-link" th:href="@{/books(page=${pageNumber},sort=${sortVariable})}" th:text="${pageNumber + 1}"></a>
-            </li>
+                    <li
+                            class="page-item"
+                            th:each="pageNumber: ${#numbers.sequence(0, bookList.totalPages - 1)}"
+                            th:classappend="${pageNumber == bookList.number ? 'active' : ''}"
+                    >
+                        <a class="page-link" th:href="@{/books(page=${pageNumber},sort=${sortVariable})}" th:text="${pageNumber + 1}"></a>
+                    </li>
 
-            <li
-                    class="page-item"
-                    th:classappend="${!bookList.hasNext() ? 'disabled' : ''}"
-            >
-                <a class="page-link"
-                   th:href="@{/books(page=${bookList.number} + 1,sort=${sortVariable})}"
-                   th:text="#{books.next}"
-                >
-                    Next
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+                    <li
+                            class="page-item"
+                            th:classappend="${!bookList.hasNext() ? 'disabled' : ''}"
+                    >
+                        <a class="page-link"
+                           th:href="@{/books(page=${bookList.number} + 1,sort=${sortVariable})}"
+                           th:text="#{books.next}"
+                        >
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </main>
+    <footer th:replace="~{fragments/layout :: footer}">placeholder</footer>
+</body>
 </html>
