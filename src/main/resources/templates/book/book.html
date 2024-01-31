@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/layout :: head(#{book.create.title})}"></head>
 <body>
-    <nav th:replace="~{fragments/layout :: nav('books/create')}">placeholder</nav>
+nav th:replace="~{fragments/layout :: nav('/private/books/create')}">placeholder</nav>
     <main class="container">
         <h3 th:text="#{book.create.name}">Lets create a book:</h3>
         <div th:if="${message ne null AND message.length > 0}"

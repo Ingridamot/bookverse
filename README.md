@@ -1,6 +1,10 @@
 # Bookverse
 WEB for Spring MVC learning
 
+### Prerequisites
+This project used Bootstrap 5 and Spring Boot 3.2.1.
+Spring Security version 6.2 included.
+
 ### Requirements
 * Language JDK 17
 * Check if JAVA_HOME used JDK 17

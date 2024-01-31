@@ -2,34 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/layout :: head(#{cart.title})}"></head>
 <body>
-    <nav th:replace="~{fragments/layout :: nav('cart')}">placeholder</nav>
+<nav th:replace="~{fragments/layout :: nav('/public/cart')}">placeholder</nav>
     <main>
         <div class="container">
             <h2 th:text="#{cart.title}">My Cart</h2>
 
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
                 <thead>
-                <tr>
-                    <th scope="col">Book Title</th>
-                    <th scope="col">Book Author</th>
-                    <th scope="col">Unit Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col"></th>
+                <tr th:with="curr=' (' + ${modelCurrencyAttr} + ')'">
+                    <th scope="col" th:text="#{cart.bookTitle}">Book Title</th>
+                    <th scope="col" th:text="#{cart.unitPrice} + *{curr}">Unit Price</th>
+                    <th scope="col" th:text="#{cart.quantity}">Quantity</th>
+                    <th scope="col" th:text="#{cart.totalPrice} + *{curr}">Total Price</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="cartItem: ${cartSession}">
-                    <td th:text="${cartItem.name}"></td>
-                    <td th:text="2.00"></td>
-                    <td th:text="3"></td>
-                    <td th:text="6.00"></td>
-                    <td></td>
+                <tr th:each="cartItem: ${cartSession.cartItems}">
+                    <td th:text="${cartItem.bookDto.title}"></td>
+                    <td th:text="${cartItem.bookDto.price}"></td>
+                    <td th:text="${cartItem.quantity}"></td>
+                    <td th:text="${cartItem.totalItemPrice}"></td>
                 </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>
+                        <strong th:text="${cartSession.cartTotalQuantity}"></strong>
+                    </td>
+                    <td>
+                        <strong th:text="${cartSession.cartTotalPrice}"></strong>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
 
-            <button class="btn btn-primary" type="submit" th:text="#{cart.order}"></button>
+            <form method="POST">
+                <button class="btn btn-primary" type="submit" th:text="#{cart.order}"></button>
+            </form>
         </div>
     </main>
     <footer th:replace="~{fragments/layout :: footer}">placeholder</footer>

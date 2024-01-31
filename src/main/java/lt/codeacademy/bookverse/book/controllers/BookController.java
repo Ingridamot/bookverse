@@ -1,12 +1,8 @@
 package lt.codeacademy.bookverse.book.controllers;
 
-import java.util.Set;
-import java.util.UUID;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lt.codeacademy.bookverse.HttpEndpoints;
 import lt.codeacademy.bookverse.book.dto.BookCategoryDto;
 import lt.codeacademy.bookverse.book.service.BookCategoryService;
 import lt.codeacademy.bookverse.helper.MessageService;
@@ -25,6 +21,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
+import java.util.Set;
+import java.util.UUID;
+
+import static lt.codeacademy.bookverse.HttpEndpoints.*;
 
 @Controller
 @Log4j2
@@ -36,7 +36,7 @@ public class BookController {
     private final MessageService messageService;
 
 
-    @GetMapping(HttpEndpoints.BOOKS_CREATE)
+    @GetMapping(BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
         Set<BookCategoryDto> categories = bookCategoryService.getCategories();
 
@@ -47,14 +47,14 @@ public class BookController {
         return "book/book";
     }
 
-    @GetMapping(HttpEndpoints.BOOKS_UPDATE)
+    @GetMapping(BOOKS_UPDATE)
     public String getFormForUpdate(Model model, @PathVariable UUID bookId) {
         log.atInfo().log("-==== get book on update ====-");
         model.addAttribute("bookDto", bookService.getBookByUUID(bookId));
         return "book/book";
     }
 
-    @PostMapping(HttpEndpoints.BOOKS_CREATE)
+    @PostMapping(BOOKS_CREATE)
     public String createABook(Model model, @Valid BookDto book, BindingResult errors) {
         if (errors.hasErrors()) {
             return "book/book";
@@ -62,17 +62,17 @@ public class BookController {
 
         bookService.saveBook(book);
 
-        return "redirect:/books/create?message=book.create.message.success";
+        return "redirect:" + BOOKS_CREATE + "?message=book.create.message.success";
     }
 
-    @PostMapping(HttpEndpoints.BOOKS_UPDATE)
+    @PostMapping(BOOKS_UPDATE)
     public String updateBook(Model model, Pageable pageable, BookDto bookDto, @PathVariable UUID bookId) {
         bookService.updateBook(bookDto);
 
         return getBooks(model, pageable);
     }
 
-    @GetMapping(HttpEndpoints.BOOKS)
+    @GetMapping(BOOK_LIST)
     public String getBooks(Model model,
                            @PageableDefault(size = 5, sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable) {
         final Page<BookDto> allBooks = bookService.getAllBooksPage(pageable);
@@ -80,7 +80,7 @@ public class BookController {
         return "book/books";
     }
 
-    @GetMapping(HttpEndpoints.BOOKS_DELETE)
+    @GetMapping(BOOKS_DELETE)
     public String deleteBook(Model model, Pageable pageable, @PathVariable UUID bookId) {
         bookService.deleteBookByUUID(bookId);
 
