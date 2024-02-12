@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/layout :: head(#{books.name})}"></head>
 <body>
-    <nav th:replace="~{fragments/layout :: nav('/public/books')}">placeholder</nav>
-    <main>
+<nav th:replace="~{fragments/layout :: nav('books')}">placeholder</nav>
+<main>
         <div th:if="${#lists.isEmpty(bookList)}" th:text="#{books.empty}">Book list is empty</div>
         <div th:if="${not #lists.isEmpty(bookList)}" class="container">
 
@@ -11,7 +11,6 @@
                  th:if="${successMessageFlashAttr ne null}" th:text="${successMessageFlashAttr}">
                 A simple success alert—check it out!
             </div>
-
 
             <span th:text="#{books.total(${bookList.totalElements})}">Total elements</span>
             <br/><span th:text="#{books.total.pages(${bookList.totalPages})}">Total pages</span>
@@ -28,7 +27,7 @@
                             <span th:text="#{books.field.title}">Title</span>
                         </a>
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-auto">
                         <a th:with="directionVariable=${bookList.sort.getOrderFor('author')?.direction}"
                            th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='author,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
                             <i th:class="'fa ' + ${directionVariable?.name eq 'ASC'? 'fa-arrow-up' : 'fa-arrow-down'}"
@@ -61,6 +60,7 @@
                 <tbody>
                 <tr th:each="book: ${bookList}">
                     <td><a th:href="@{/books/{bookId}/update(bookId=${book.bookId})}" th:text="${book.title}"></a></td>
+                    <td th:text="${book.author}">a</td>
                     <td th:text="${book.price}">a</td>
                     <td th:text="${book.amount}">a</td>
                     <td class="d-flex gap-2">

@@ -15,17 +15,22 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class BookDto {
+
     private UUID bookId;
+
     @NotBlank(message = "{bookdto.title.notblank}")
     private String title;
+
     @NotBlank(message = "{bookdto.author.notblank}")
     private String author;
+
     @Positive(message = "{bookdto.positive}")
     private BigDecimal price;
+
     @Positive(message = "{bookdto.positive}")
     @NotNull
     private int amount;
+
     @NotNull
-    @Size
     private Long categoryId;
 }

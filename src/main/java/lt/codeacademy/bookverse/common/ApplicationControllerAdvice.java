@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class ApplicationControllerAdvice {
 
-    @ExceptionHandler
-    public String productNotFound(BookNotFoundException e, Model model) {
-        model.addAttribute("productUUID", e.getBookUUID());
-        return "product/error/productNotFound";
+//    @ExceptionHandler
+    public String bookNotFound(BookNotFoundException e, Model model) {
+        model.addAttribute("bookUUID", e.getBookUUID());
+        return "book/error/bookNotFound";
     }
 
     @InitBinder

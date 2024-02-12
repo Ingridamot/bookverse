@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/layout :: head(#{book.create.title})}"></head>
+<head th:replace="~{fragments/layout :: head(#{book.create.name})}"></head>
 <body>
-nav th:replace="~{fragments/layout :: nav('/private/books/create')}">placeholder</nav>
-    <main class="container">
-        <h3 th:text="#{book.create.name}">Lets create a book:</h3>
-        <div th:if="${message ne null AND message.length > 0}"
-             class="alert alert-success" role="alert"
-             th:text="${message}">
+<nav th:replace="~{fragments/layout :: nav('/books/create')}">placeholder</nav>
+<main class="container">
+    <h3 th:text="#{book.create.name}">Lets create a book:</h3>
+    <div th:if="${message ne null AND message.length > 0}"
+         class="alert alert-success" role="alert"
+         th:text="${message}">
             Success message when add book
         </div>
+
         <form method="post" th:object="${bookDto}">
             <div class="mb-3 form-group">
                 <label th:text="#{book.create.title} + ':'">Title:</label>

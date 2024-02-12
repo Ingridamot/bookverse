@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: unsecure
   main:
     banner-mode: console
   h2:
@@ -37,7 +39,6 @@ server:
   error:
     whitelabel:
       enabled: false
-
   servlet:
     session:
       # tracking mode will store/show session only in cookie

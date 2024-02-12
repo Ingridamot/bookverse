@@ -16,9 +16,9 @@
     <p class="text-center" th:text="#{footer.message}"></p>
 </footer>
 
-<nav th:fragment="nav(page)" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav th:fragment="nav(page)" class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">BookVerse</a>
+        <a class="navbar-brand" th:href="@{/}">Bookverse</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -27,16 +27,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/public/books}" th:text="#{books.name}"></a>
+                    <a class="nav-link" th:href="@{/books}" th:text="#{books.name}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/private/books/create}" th:text="#{book.create.name}"></a>
+                    <a class="nav-link" th:href="@{/books/create}" th:text="#{book.create.name}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/public/users/create}" th:text="#{user.create.name}"></a>
+                    <a class="nav-link" th:href="@{/users/create}" th:text="#{user.create.title}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/public/cart}" th:text="#{cart.title}"></a>
+                    <a class="nav-link" th:href="@{/cart}" th:text="#{cart.title}"></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

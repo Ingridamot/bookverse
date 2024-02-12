@@ -10,11 +10,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
-import static lt.codeacademy.bookverse.HttpEndpoints.CART;
-import static lt.codeacademy.bookverse.HttpEndpoints.BOOK_LIST;
-
 @Controller
-@RequestMapping(CART)
+@RequestMapping("/cart")
 @SessionAttributes("cartSession")
 @RequiredArgsConstructor
 public class CartController {
@@ -36,7 +33,7 @@ public class CartController {
                             @ModelAttribute("cartSession") CartDto cart) {
         cartService.addBookToCartByBookId(bookId, cart);
 
-        return "redirect:" + BOOK_LIST;
+        return "redirect:/books";
     }
 
     @PostMapping
@@ -47,8 +44,7 @@ public class CartController {
 
         redirectAttributes.addFlashAttribute("successMessageFlashAttr", "Order created successfully!");
 
-        return "redirect:" + BOOK_LIST;
+        return "redirect:/books";
     }
 
 }
-
