@@ -50,6 +50,7 @@ public class BookController {
     public String getFormForUpdate(Model model, @PathVariable UUID bookId) {
         log.info("Got request for GET /books/{}/update", bookId);
         model.addAttribute("bookDto", bookService.getBookByUUID(bookId));
+
         return "book/book";
     }
 
