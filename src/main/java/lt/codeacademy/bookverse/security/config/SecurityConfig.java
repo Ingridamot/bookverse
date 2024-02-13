@@ -7,7 +7,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -46,4 +51,23 @@ public class SecurityConfig {
                         PathRequest.toStaticResources().atCommonLocations()
                 );
     }
+    @Bean
+    public UserDetailsService inMemoryUserDetailsService() {
+        final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        final UserDetails adminUser = User.builder()
+                .username("admin@bookverse.lt")
+                .password(encoder.encode("admin"))
+                .roles("ADMIN", "USER")
+                .build();
+        final UserDetails userUser = User.builder()
+                .username("user@bookverse.lt")
+                .password("{noop}user")   // look PasswordEncoderFactories
+                .roles("USER")
+                .build();
+        System.out.println(adminUser.getPassword());
+        System.out.println(userUser.getPassword());
+
+        return new InMemoryUserDetailsManager(adminUser, userUser);
+    }
 }
+
