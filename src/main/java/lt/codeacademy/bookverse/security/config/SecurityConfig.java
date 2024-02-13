@@ -1,24 +1,38 @@
 package lt.codeacademy.bookverse.security.config;
 
+import javax.sql.DataSource;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @Profile("!unsecure")
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -52,22 +66,11 @@ public class SecurityConfig {
                 );
     }
     @Bean
-    public UserDetailsService inMemoryUserDetailsService() {
-        final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        final UserDetails adminUser = User.builder()
-                .username("admin@bookverse.lt")
-                .password(encoder.encode("admin"))
-                .roles("ADMIN", "USER")
-                .build();
-        final UserDetails userUser = User.builder()
-                .username("user@bookverse.lt")
-                .password("{noop}user")   // look PasswordEncoderFactories
-                .roles("USER")
-                .build();
-        System.out.println(adminUser.getPassword());
-        System.out.println(userUser.getPassword());
+    public AuthenticationProvider authenticationProvider() {
+        final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
 
-        return new InMemoryUserDetailsManager(adminUser, userUser);
+        return authenticationProvider;
     }
-}
 
+}
