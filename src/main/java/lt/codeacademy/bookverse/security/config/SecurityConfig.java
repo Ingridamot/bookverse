@@ -11,7 +11,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -19,6 +21,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -37,24 +40,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-             .authorizeHttpRequests(authorize -> authorize
-                 .requestMatchers(
-                      "/",
-                      "/books",
-                      "/cart/**",
-                      "/users/**"
-                 ).permitAll()
-                 .anyRequest()
-                 .authenticated())
-             .formLogin(loginConfigure -> loginConfigure
-                  .permitAll()
-                  .loginPage("/login")                //GET - the login form
-                  .loginProcessingUrl("/login")       //Specifies the URL to validate the credentials.
-                  .defaultSuccessUrl("/books", true)
-                  .usernameParameter("loginEmail")    //The HTTP parameter to look for the username
-                  .passwordParameter("loginPassword") //The HTTP parameter to look for the password
-             )
-             .build();
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                "/",
+                                "/books",
+                                "/cart/**",
+                                "/users/**"
+                        ).permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .formLogin(loginConfigure -> loginConfigure
+                        .permitAll()
+                        .loginPage("/login")                //GET - the login form
+                        .loginProcessingUrl("/login")       //Specifies the URL to validate the credentials.
+                        .defaultSuccessUrl("/books", true)
+                        .usernameParameter("loginEmail")    //The HTTP parameter to look for the username
+                        .passwordParameter("loginPassword") //The HTTP parameter to look for the password
+                )
+                .build();
     }
 
     @Bean
@@ -65,12 +68,19 @@ public class SecurityConfig {
                         PathRequest.toStaticResources().atCommonLocations()
                 );
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return authenticationProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
