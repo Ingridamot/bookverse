@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lt.codeacademy.bookverse.user.dto.UserDto;
+import lt.codeacademy.bookverse.user.service.UsersRegistrationService;
 import lt.codeacademy.bookverse.user.service.UsersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UsersService usersService;
+    private final UsersRegistrationService usersRegistrationService;
 
     @GetMapping("/create")
     public String getUserForm(Model model) {
@@ -34,7 +36,7 @@ public class UserController {
         if (errors.hasErrors()) {
             return "user/user";
         }
-        usersService.register(userDto);
+        usersRegistrationService.register(userDto);
 
         return "redirect:/users/create";
     }

@@ -25,17 +25,6 @@ public class UsersService implements UserDetailsService {
         return userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("'" + username + "' not found!"));
     }
-    public void register(UserDto userDto) {
-        userRepository.save(
-                User.builder()
-                        .name(userDto.getName())
-                        .surname(userDto.getSurname())
-                        .email(userDto.getEmail())
-                        .phoneNumber(userDto.getPhoneNumber())
-                        .zipCode(userDto.getZipCode())
-                        .password(new BCryptPasswordEncoder().encode(userDto.getPassword()))
-                        .build()
-        );
-    }
+
 }
 
