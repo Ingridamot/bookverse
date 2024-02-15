@@ -2,7 +2,6 @@ package lt.codeacademy.bookverse.book.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import lt.codeacademy.bookverse.HttpEndpoints;
 import lt.codeacademy.bookverse.helper.MessageService;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +34,7 @@ public class BookController {
     private final BookService bookService;
     private final BookCategoryService bookCategoryService;
     private final MessageService messageService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
         Set<BookCategoryDto> categories = bookCategoryService.getCategories();
@@ -45,7 +45,7 @@ public class BookController {
 
         return "book/book";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(BOOKS_UPDATE)
     public String getFormForUpdate(Model model, @PathVariable UUID bookId) {
         log.info("Got request for GET /books/{}/update", bookId);
@@ -53,7 +53,7 @@ public class BookController {
 
         return "book/book";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(BOOKS_CREATE)
     public String createABook(Model model, @Valid BookDto book, BindingResult errors) {
         if (errors.hasErrors()) {
@@ -64,7 +64,7 @@ public class BookController {
 
         return "redirect:/books/create?message=book.create.message.success";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(BOOKS_UPDATE)
     public String updateBook(Model model, Pageable pageable, BookDto bookDto, @PathVariable UUID bookId) {
         bookService.updateBook(bookDto);
@@ -79,7 +79,7 @@ public class BookController {
         model.addAttribute("bookList", allBooks);
         return "book/books";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(HttpEndpoints.BOOKS_DELETE)
     public String deleteBook(Model model, Pageable pageable, @PathVariable UUID bookId) {
         bookService.deleteBookByUUID(bookId);

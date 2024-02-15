@@ -1,12 +1,17 @@
 package lt.codeacademy.bookverse.user.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lt.codeacademy.bookverse.user.dto.UserDto;
 import lt.codeacademy.bookverse.user.pojo.Authority;
 import lt.codeacademy.bookverse.user.pojo.User;
+import lt.codeacademy.bookverse.user.repository.AuthorityRepository;
 import lt.codeacademy.bookverse.user.repository.UserRepository;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,9 +24,14 @@ import org.springframework.stereotype.Service;
 public class UsersRegistrationService {
 
     private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void register(UserDto userDto) {
+    public void register(UserDto userDto) throws DataIntegrityViolationException {
+        final Set<Authority> authorities = authorityRepository.findAll().stream()
+                .filter(authority -> authority.getName().equals("USER"))
+                .collect(Collectors.toSet());
+
         userRepository.save(
                 User.builder()
                         .name(userDto.getName())
@@ -30,10 +40,7 @@ public class UsersRegistrationService {
                         .phoneNumber(userDto.getPhoneNumber())
                         .zipCode(userDto.getZipCode())
                         .password(new BCryptPasswordEncoder().encode(userDto.getPassword()))
-                        .authorities(Set.of(
-                            Authority.builder()
-                                .name("USER")
-                                .build()))
+                        .authorities(authorities)
                         .build()
         );
     }

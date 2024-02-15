@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head th:replace="~{fragments/layout :: head(#{books.name})}"></head>
 <body>
 <nav th:replace="~{fragments/layout :: nav('books')}">placeholder</nav>
@@ -63,20 +65,25 @@
                     <td th:text="${book.author}">a</td>
                     <td th:text="${book.price}">a</td>
                     <td th:text="${book.amount}">a</td>
-                    <td class="d-flex gap-2">
-                        <form method="POST" th:action="@{/cart/{bookId}(bookId=${book.bookId})}">
-                            <button class="btn btn-dark">
-                                <i class="fa-solid fa-cart-plus"></i>
-                            </button>
-                        </form>
-                        <a
-                                th:href="@{/books/{bookId}/delete(bookId=${book.bookId})}"
-                                th:text="#{books.delete}"
-                                class="btn btn-warning"
-                        >
-                            Delete
-                        </a>
-                    </td>
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <td class="d-flex gap-2">
+                            <form method="POST" th:action="@{/cart/{bookId}(bookId=${book.bookId})}">
+                                <button class="btn btn-primary">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </form>
+                            <a
+                                    th:href="@{/books/{bookId}/delete(bookId=${book.bookId})}"
+                                    th:text="#{books.delete}"
+                                    class="btn btn-warning"
+                            >
+                                Delete
+                            </a>
+                        </td>
+                    </div>
+                    <div sec:authorize="!hasRole('ADMIN')">
+                        <td></td>
+                    </div>
                 </tr>
                 </tbody>
             </table>

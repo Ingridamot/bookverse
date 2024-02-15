@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import lt.codeacademy.bookverse.user.dto.UserDto;
 import lt.codeacademy.bookverse.user.service.UsersRegistrationService;
 import lt.codeacademy.bookverse.user.service.UsersService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +37,14 @@ public class UserController {
         if (errors.hasErrors()) {
             return "user/user";
         }
-        usersRegistrationService.register(userDto);
+        try {
+            usersRegistrationService.register(userDto);
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage().contains("EMAIL")) {
+                //TODO: pasiaskinti kodel nerodo klaidos html'e
+                errors.rejectValue("email", "Email already used!");
+            }
+        }
 
         return "redirect:/users/create";
     }

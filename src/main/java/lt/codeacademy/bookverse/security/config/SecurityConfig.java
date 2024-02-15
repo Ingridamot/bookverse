@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -27,11 +28,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 @Profile("!unsecure")
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
     private final DataSource dataSource;
@@ -43,9 +46,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/",
-                                "/books",
+                                "/books/**",  // changed from /books to /books/** for test security in controller level
                                 "/cart/**",
-                                "/users/**"
+                                "/users/**",
+                                "/error/**"
                         ).permitAll()
                         .anyRequest()
                         .authenticated())
@@ -56,6 +60,12 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/books", true)
                         .usernameParameter("loginEmail")    //The HTTP parameter to look for the username
                         .passwordParameter("loginPassword") //The HTTP parameter to look for the password
+                )
+                .logout(logoutConfigure -> logoutConfigure
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
                 )
                 .build();
     }
