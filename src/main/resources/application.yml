@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: no-security
   main:
     banner-mode: console
   h2:
@@ -9,6 +11,7 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:bookverse_db
     username: sa
+    password: password
   sql:
     init:
       schema-locations: classpath:db/ddl-scripts.sql
@@ -21,6 +24,10 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+  security:
+    user:
+      name: admin@bookverse.lt
+      password: admin
 logging:
   level:
     lt:
