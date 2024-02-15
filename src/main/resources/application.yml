@@ -24,10 +24,6 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
-  security:
-    user:
-      name: admin@bookverse.lt
-      password: admin
 logging:
   level:
     lt:
