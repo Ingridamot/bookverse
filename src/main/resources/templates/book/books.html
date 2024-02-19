@@ -22,7 +22,7 @@
                 <tr>
                     <th class="col-md-auto">
                         <a th:with="directionVariable=${bookList.sort.getOrderFor('title')?.direction}"
-                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='title,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
+                           th:href="@{/books/list(page=${bookList.getPageable().getPageNumber()},sort='title,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
                             <i th:class="'fa ' + ${directionVariable?.name eq 'ASC'? 'fa-arrow-up' : 'fa-arrow-down'}"
                                aria-hidden="true"
                                th:if="${bookList.sort.getOrderFor('title') ne null}"></i>
@@ -31,7 +31,7 @@
                     </th>
                     <th class="col-md-auto">
                         <a th:with="directionVariable=${bookList.sort.getOrderFor('author')?.direction}"
-                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='author,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
+                           th:href="@{/books/list(page=${bookList.getPageable().getPageNumber()},sort='author,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
                             <i th:class="'fa ' + ${directionVariable?.name eq 'ASC'? 'fa-arrow-up' : 'fa-arrow-down'}"
                                aria-hidden="true"
                                th:if="${bookList.sort.getOrderFor('author') ne null}"></i>
@@ -40,7 +40,7 @@
                     </th>
                     <th class="col-md-2">
                         <a th:with="directionVariable=${bookList.sort.getOrderFor('price')?.direction}"
-                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='price,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
+                           th:href="@{/books/list(page=${bookList.getPageable().getPageNumber()},sort='price,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
                             <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
                                aria-hidden="true"
                                th:if="${bookList.sort.getOrderFor('price') ne null}"></i>
@@ -49,7 +49,7 @@
                     </th>
                     <th class="col-md-2">
                         <a th:with="directionVariable=${bookList.sort.getOrderFor('amount')?.direction}"
-                           th:href="@{/books(page=${bookList.getPageable().getPageNumber()},sort='amount,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
+                           th:href="@{/books/list(page=${bookList.getPageable().getPageNumber()},sort='amount,' + ${directionVariable?.name eq 'ASC' ? 'DESC' : 'ASC'})}">
                             <i th:class="'fa ' + ${directionVariable?.name eq 'ASC' ? 'fa-arrow-up' : 'fa-arrow-down'}"
                                aria-hidden="true"
                                th:if="${bookList.sort.getOrderFor('amount') ne null}"></i>
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="book: ${bookList}">
-                    <td><a th:href="@{/books/{bookId}/update(bookId=${book.bookId})}" th:text="${book.title}"></a></td>
+                    <td><a th:href="@{/books/list/{bookId}/update(bookId=${book.bookId})}" th:text="${book.title}"></a></td>
                     <td th:text="${book.author}">a</td>
                     <td th:text="${book.price}">a</td>
                     <td th:text="${book.amount}">a</td>

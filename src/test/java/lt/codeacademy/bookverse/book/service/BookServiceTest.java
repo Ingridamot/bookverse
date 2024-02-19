@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +40,7 @@ public class BookServiceTest {
         var bookUUID = UUID.randomUUID();
         var categoryId = 123L;
 
-        var bookDto = new BookDto(bookUUID, "Altoriu Seselyje", "Vincas mykolaitis Putinas", BigDecimal.valueOf(1.95), 1, categoryId);
+        var bookDto = new BookDto(bookUUID, "Altoriu Seselyje", "Vincas mykolaitis Putinas", BigDecimal.valueOf(1.95), 1, List.of(categoryId));
         var book = new Book();
 
         when(bookCategoryRepository.getReferenceById(any())).thenReturn(new BookCategory());

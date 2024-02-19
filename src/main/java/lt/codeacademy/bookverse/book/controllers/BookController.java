@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,6 +35,8 @@ public class BookController {
     private final BookService bookService;
     private final BookCategoryService bookCategoryService;
     private final MessageService messageService;
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(HttpEndpoints.BOOKS_CREATE)
     public String getFormForCreate(Model model, String message) {
@@ -72,7 +75,7 @@ public class BookController {
         return getBooks(model, pageable);
     }
 
-    @GetMapping(HttpEndpoints.BOOKS)
+    @GetMapping("/books/list")
     public String getBooks(Model model,
                            @PageableDefault(size = 5, sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable) {
         final Page<BookDto> allBooks = bookService.getAllBooksPage(pageable);

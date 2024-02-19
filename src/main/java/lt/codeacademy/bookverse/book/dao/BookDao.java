@@ -10,7 +10,7 @@ import java.util.UUID;
 
 
 public interface BookDao { //Dao atlieka duombazes logikos funkcijas, duomenu saugojimas, trynimas, atnaujinimas ir panasios operacijos
-    void save(Book book);
+    Book save(Book book);
 
     void update(Book book);
 

@@ -27,6 +27,7 @@ public class BookJPADaoTest {
                 .price(BigDecimal.valueOf(0))
                 .amount(1)
                 .build();
+        when(repository.findByBookId(any(UUID.class))).thenReturn(Optional.of(book));
 
         bookDao.save(book);
 

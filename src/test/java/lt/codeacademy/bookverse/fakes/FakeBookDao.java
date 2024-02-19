@@ -20,9 +20,11 @@ public class FakeBookDao implements BookDao {
     }
 
     @Override
-    public void save(Book book) {
+    public Book save(Book book) {
         book.setId(storage.size() + 1);
         storage.put(book.getBookId(), book);
+
+        return book;
     }
 
     @Override

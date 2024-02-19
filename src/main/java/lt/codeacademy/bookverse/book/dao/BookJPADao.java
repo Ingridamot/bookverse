@@ -1,5 +1,6 @@
 package lt.codeacademy.bookverse.book.dao;
 
+import lt.codeacademy.bookverse.book.exception.BookNotFoundException;
 import lt.codeacademy.bookverse.book.pojo.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -21,9 +22,14 @@ public class BookJPADao implements BookDao{
         this.repository = bookRepository;
     }
     @Override
-    public void save(Book book) {
-        book.setBookId(UUID.randomUUID());
+    public Book save(Book book) {
+        UUID bookId = UUID.randomUUID();
+        book.setBookId(bookId);
+
         repository.save(book);
+
+        return repository.findByBookId(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
     }
 
     @Override

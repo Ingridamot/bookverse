@@ -27,11 +27,21 @@ public class BookService {
   @Transactional
     public void saveBook(BookDto bookDto) {
       final Book book = mapper.fromDto(bookDto);
-      final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryId());
+      final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryIds().get(0));
 
       book.getBookCategories().add(bookCategory);
 
       bookDao.save(book);
+    }
+
+    @Transactional
+    public BookDto save(BookDto bookDto) {
+        final Book book = mapper.fromDto(bookDto);
+        final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryIds().get(0));
+
+        book.getBookCategories().add(bookCategory);
+
+        return mapper.toDto(bookDao.save(book));
     }
 
     public void updateBook(BookDto bookDto) {
