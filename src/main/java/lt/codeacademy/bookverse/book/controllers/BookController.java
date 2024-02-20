@@ -48,16 +48,18 @@ public class BookController {
 
         return "book/book";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(BOOKS_UPDATE)
+    @GetMapping(HttpEndpoints.BOOKS_UPDATE)
     public String getFormForUpdate(Model model, @PathVariable UUID bookId) {
         log.info("Got request for GET /books/{}/update", bookId);
         model.addAttribute("bookDto", bookService.getBookByUUID(bookId));
 
         return "book/book";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(BOOKS_CREATE)
+    @PostMapping(HttpEndpoints.BOOKS_CREATE)
     public String createABook(Model model, @Valid BookDto book, BindingResult errors) {
         if (errors.hasErrors()) {
             return "book/book";
@@ -67,8 +69,9 @@ public class BookController {
 
         return "redirect:/books/create?message=book.create.message.success";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(BOOKS_UPDATE)
+    @PostMapping(HttpEndpoints.BOOKS_UPDATE)
     public String updateBook(Model model, Pageable pageable, BookDto bookDto, @PathVariable UUID bookId) {
         bookService.updateBook(bookDto);
 
@@ -77,11 +80,13 @@ public class BookController {
 
     @GetMapping("/books/list")
     public String getBooks(Model model,
-                           @PageableDefault(size = 5, sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable) {
+                              @PageableDefault(size = 5, sort = {"price"}, direction = Sort.Direction.ASC) Pageable pageable) {
         final Page<BookDto> allBooks = bookService.getAllBooksPage(pageable);
         model.addAttribute("bookList", allBooks);
+
         return "book/books";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(HttpEndpoints.BOOKS_DELETE)
     public String deleteBook(Model model, Pageable pageable, @PathVariable UUID bookId) {
@@ -90,4 +95,3 @@ public class BookController {
         return getBooks(model, pageable);
     }
 }
-

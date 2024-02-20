@@ -24,14 +24,14 @@ public class BookService {
     private final BookCategoryRepository bookCategoryRepository;
     private final BookMapper mapper;
 
-  @Transactional
+    @Transactional
     public void saveBook(BookDto bookDto) {
-      final Book book = mapper.fromDto(bookDto);
-      final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryIds().get(0));
+        final Book book = mapper.fromDto(bookDto);
+        final BookCategory bookCategory = bookCategoryRepository.getReferenceById(bookDto.getCategoryIds().get(0));
 
-      book.getBookCategories().add(bookCategory);
+        book.getBookCategories().add(bookCategory);
 
-      bookDao.save(book);
+        bookDao.save(book);
     }
 
     @Transactional
@@ -57,9 +57,9 @@ public class BookService {
                 .map(mapper::toDto)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
+
     @Transactional
     public void deleteBookByUUID(UUID id) {
         bookDao.deleteBookByUUID(id);
     }
 }
-
