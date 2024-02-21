@@ -1,6 +1,7 @@
 package lt.codeacademy.bookverse.book.mappers;
 
-import lt.codeacademy.bookverse.book.pojo.BookCategory;
+import lt.codeacademy.bookverse.common.book.mappers.BookCategoryMapper;
+import lt.codeacademy.bookverse.jpa.entities.BookCategory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

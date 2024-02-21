@@ -1,7 +1,8 @@
 package lt.codeacademy.bookverse.book.dao;
 
-import lt.codeacademy.bookverse.book.pojo.Book;
-import lt.codeacademy.bookverse.book.pojo.BookCategory;
+import lt.codeacademy.bookverse.common.book.dao.BookJPADao;
+import lt.codeacademy.bookverse.jpa.repositories.BookRepository;
+import lt.codeacademy.bookverse.jpa.entities.Book;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

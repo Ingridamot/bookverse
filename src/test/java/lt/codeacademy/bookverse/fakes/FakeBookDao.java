@@ -1,8 +1,7 @@
 package lt.codeacademy.bookverse.fakes;
 
-import lombok.Getter;
-import lt.codeacademy.bookverse.book.dao.BookDao;
-import lt.codeacademy.bookverse.book.pojo.Book;
+import lt.codeacademy.bookverse.common.book.dao.BookDao;
+import lt.codeacademy.bookverse.jpa.entities.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

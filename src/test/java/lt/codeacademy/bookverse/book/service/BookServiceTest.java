@@ -1,11 +1,12 @@
 package lt.codeacademy.bookverse.book.service;
 
-import lt.codeacademy.bookverse.book.dao.BookCategoryRepository;
-import lt.codeacademy.bookverse.book.dao.BookDao;
-import lt.codeacademy.bookverse.book.dto.BookDto;
-import lt.codeacademy.bookverse.book.mappers.BookMapper;
-import lt.codeacademy.bookverse.book.pojo.Book;
-import lt.codeacademy.bookverse.book.pojo.BookCategory;
+import lt.codeacademy.bookverse.jpa.repositories.BookCategoryRepository;
+import lt.codeacademy.bookverse.common.book.dao.BookDao;
+import lt.codeacademy.bookverse.common.book.dto.BookDto;
+import lt.codeacademy.bookverse.common.book.mappers.BookMapper;
+import lt.codeacademy.bookverse.jpa.entities.Book;
+import lt.codeacademy.bookverse.jpa.entities.BookCategory;
+import lt.codeacademy.bookverse.common.book.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

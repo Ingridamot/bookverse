@@ -1,10 +1,10 @@
 package lt.codeacademy.bookverse.book.dao;
 
-import lt.codeacademy.bookverse.book.pojo.Book;
+import lt.codeacademy.bookverse.common.book.dao.BookJPADao;
+import lt.codeacademy.bookverse.jpa.repositories.BookRepository;
+import lt.codeacademy.bookverse.jpa.entities.Book;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 

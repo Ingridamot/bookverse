@@ -1,8 +1,9 @@
 package lt.codeacademy.bookverse.user.controllers;
 
-import lt.codeacademy.bookverse.user.dto.UserDto;
-import lt.codeacademy.bookverse.user.service.UsersRegistrationService;
-import lt.codeacademy.bookverse.user.service.UsersService;
+import lt.codeacademy.bookverse.mvc.controllers.UserController;
+import lt.codeacademy.bookverse.common.user.dto.UserDto;
+import lt.codeacademy.bookverse.common.user.service.UsersRegistrationService;
+import lt.codeacademy.bookverse.common.user.service.UsersService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
