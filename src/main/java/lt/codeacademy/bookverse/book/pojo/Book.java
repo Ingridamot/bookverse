@@ -30,6 +30,6 @@ public class Book {
     private BigDecimal price;
     private int amount;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER) // nesikreipt atskirai į duomenų bazę, kad gauti susijusių objektų duomenis , tai su FetchType viskas bus užkrauta iš kart
     private Set<BookCategory> bookCategories = new HashSet<>();
 }

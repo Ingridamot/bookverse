@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: unsecure
+#  profiles:
+#    active: unsecure
   main:
     banner-mode: console
   h2:

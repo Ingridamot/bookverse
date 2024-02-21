@@ -36,7 +36,7 @@
                 <label for="categories" th:text="#{book.create.category} + ':'">Category:</label>
                 <div class="dropdown">
                     <select id="categories"
-                            th:field="*{categoryId}"
+                            th:field="*{categoryIds}"
                             class="form-select" aria-label="Default select example">
                         <option th:each="category: ${categoriesDto}"
                                 th:value="${category.id}"
